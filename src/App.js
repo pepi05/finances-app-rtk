@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import Home from "./components/HomePage/Home";
+import Register from "./components/Forms/Register";
+import MainDashBoard from "./components/Dashboard/MainDashBoard";
+import AccountDetails from "./components/Dashboard/AccountDetails";
+import Navbar from "./components/Navbar/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddTransaction from "./components/Forms/AddTransaction";
+import EditTransaction from "./components/Forms/EditTransaction";
+import AddAccount from "./components/Forms/AddAccount";
+import EditAccount from "./components/Forms/EditAccount";
+import Login from "./components/Forms/Login";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<MainDashBoard />} />
+        <Route path="/account" element={<AccountDetails />} />
+        <Route path="/account/:id" element={<AccountDetails />} />
+        <Route path="/add-transaction/:id" element={<AddTransaction />} />
+        <Route path="/edit-transaction/:id" element={<EditTransaction />} />
+        <Route path="/add-account" element={<AddAccount />} />
+        <Route path="/edit-account/:id" element={<EditAccount />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
