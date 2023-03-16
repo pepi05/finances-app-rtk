@@ -9,6 +9,7 @@ import EditTransaction from "./components/Forms/EditTransaction";
 import AddAccount from "./components/Forms/AddAccount";
 import EditAccount from "./components/Forms/EditAccount";
 import Login from "./components/Forms/Login";
+import AuthRoute from "./components/AuthRoute/AuthRoute";
 
 function App() {
   return (
@@ -17,12 +18,26 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<MainDashBoard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <AuthRoute>
+              <MainDashBoard />
+            </AuthRoute>
+          }
+        />
         <Route path="/account" element={<AccountDetails />} />
         <Route path="/account/:id" element={<AccountDetails />} />
         <Route path="/add-transaction/:id" element={<AddTransaction />} />
         <Route path="/edit-transaction/:id" element={<EditTransaction />} />
-        <Route path="/add-account" element={<AddAccount />} />
+        <Route
+          path="/add-account"
+          element={
+            <AuthRoute>
+              <AddAccount />
+            </AuthRoute>
+          }
+        />
         <Route path="/edit-account/:id" element={<EditAccount />} />
         <Route path="/login" element={<Login />} />
       </Routes>

@@ -1,26 +1,43 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createAccountAction } from "../../redux/slice/accounts/accountsSlice";
 
 const AddAccount = () => {
-  const [transaction, setTransaction] = useState({
-    title: "",
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [account, setAccount] = useState({
+    name: "",
     initialBalance: "",
-    transactionType: "",
     notes: "",
     accountType: "",
   });
-  //---Destructuring---
-  const { title, initialBalance, notes, accountType } = transaction;
-  //---onchange handler----
+
+  const { name, initialBalance, notes, accountType } = account;
+
   const onChange = (e) => {
-    setTransaction({ ...transaction, [e.target.name]: e.target.value });
+    setAccount({ ...account, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(transaction);
+    dispatch(createAccountAction(account));
   };
+  //get store data
+  const {
+    account: accountCreated,
+    loading,
+    error,
+    success,
+  } = useSelector((state) => state?.accounts);
+  useEffect(() => {
+    setTimeout(() => {
+      if (success) {
+        navigate("/dashboard");
+        window.location.reload();
+      }
+    }, 3000);
+  }, [success]);
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -31,12 +48,18 @@ const AddAccount = () => {
           <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
             Create an account(Project) to start tracking your transactions
           </p>
+          {/* error */}
+          {error && (
+            <p className="mb-3 font-medium text-lg text-red-600 leading-normal">
+              {error}
+            </p>
+          )}
           <form onSubmit={onSubmit}>
             <label className="block mb-5">
               <input
-                value={title}
+                value={name}
                 onChange={onChange}
-                name="title"
+                name="name"
                 className="px-4 py-3.5 w-full text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                 id="signUpInput2-1"
                 type="text"
@@ -67,7 +90,6 @@ const AddAccount = () => {
                 <option value="Investment">Investment</option>
                 <option value="Checking">Checking</option>
                 <option value="Credit Card">Credit Card</option>
-                <option value="Builing">Builing</option>
                 <option value="School">School</option>
                 <option value="Project">Project</option>
                 <option value="Utilities">Utilities</option>
@@ -95,12 +117,21 @@ const AddAccount = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-            >
-              Create Account
-            </button>
+            {loading ? (
+              <button
+                disabled
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-gray-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+              >
+                Create Account
+              </button>
+            )}
             {/* <p className="font-medium">
               <span>Already have an account?</span>
               <a className="text-indigo-600 hover:text-indigo-700" href="#">
