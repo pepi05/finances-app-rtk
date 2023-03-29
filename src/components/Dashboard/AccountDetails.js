@@ -15,9 +15,14 @@ const AccountDetails = () => {
   //get data from store
   const { account, error, loading } = useSelector((state) => state?.accounts);
 
-  console.log(account);
   return (
     <>
+      {error && <h2 className="text-center text-red-700 mt-5">{error}</h2>}
+      {loading && (
+        <h2 className="text-center text-indigo-700 mt-5 text-3xl">
+          Loading...
+        </h2>
+      )}
       {/* Account Summary */}
       <section
         className="py-20 xl:pt-24 xl:pb-32 bg-white"
@@ -78,7 +83,7 @@ const AccountDetails = () => {
               }}
             >
               <Link
-                to={"/add-transaction/1"}
+                to={`/add-transaction/${account?.data?._id}`}
                 type="button"
                 className="inline-flex text-center items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
@@ -89,7 +94,13 @@ const AccountDetails = () => {
         </div>
       </section>
 
-      <TransactionList />
+      {account?.data?.transactions?.length <= 0 ? (
+        <h2 className="text-center text-indigo-700 mb-5 text-3xl">
+          No Transaction Found
+        </h2>
+      ) : (
+        <TransactionList transactions={account?.data?.transactions} />
+      )}
     </>
   );
 };
