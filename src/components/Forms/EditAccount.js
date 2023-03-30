@@ -1,26 +1,54 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  getSingleAccountAction,
+  updateAccountAction,
+} from "../../redux/slice/accounts/accountsSlice";
 
 const EditAccount = () => {
+  //GET ACCOUNT ID
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSingleAccountAction(id));
+  }, [id, dispatch]);
+
+  //get store data
+  const { account, loading, error, isUpdated } = useSelector(
+    (state) => state?.accounts
+  );
+
   const [transaction, setTransaction] = useState({
-    title: "",
-    initialBalance: "",
-    transactionType: "",
-    notes: "",
-    accountType: "",
+    name: account?.data?.name,
+    initialBalance: account?.data?.initialBalance,
+    transactionType: account?.data?.transactionType,
+    notes: account?.data?.notes,
+    accountType: account?.data?.accountType,
   });
-  //---Destructuring---
-  const { title, initialBalance, accountType, notes } = transaction;
-  //---onchange handler----
+
+  const { name, initialBalance, accountType, notes } = transaction;
+
   const onChange = (e) => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(transaction);
+    dispatch(updateAccountAction({ ...transaction, id }));
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isUpdated) {
+        navigate("/dashboard");
+        window.location.reload();
+      }
+    }, 2000);
+  }, [isUpdated]);
+
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -28,19 +56,24 @@ const EditAccount = () => {
           <h2 className="mb-4 text-4xl md:text-5xl text-center font-bold font-heading tracking-px-n leading-tight">
             Edit Account
           </h2>
-          <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
-            You are editing....
+          <p className="mb-3 font-medium text-lg text-gray-600 leading-normal">
+            You are editing "{account?.data?.name}" project
           </p>
+          {error && (
+            <p className="mb-3 font-medium text-lg text-red-600 leading-normal">
+              {error}
+            </p>
+          )}
           <form onSubmit={onSubmit}>
             <label className="block mb-5">
               <input
-                value={title}
+                value={name}
                 onChange={onChange}
-                name="title"
+                name="name"
                 className="px-4 py-3.5 w-full text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                 id="signUpInput2-1"
                 type="text"
-                placeholder="Enter Title"
+                placeholder="Enter Name"
               />
             </label>
             <label className="block mb-5">
@@ -95,14 +128,23 @@ const EditAccount = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-            >
-              Create Account
-            </button>
+            {loading ? (
+              <button
+                disabled
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-gray-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-gray-600 hover:bg-gray-700 transition ease-in-out duration-200"
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+              >
+                Update Account
+              </button>
+            )}
             <Link to={"/account/8"} className="font-medium">
-              <a className="text-indigo-600 hover:text-indigo-700" href="#">
+              <a className="text-indigo-600 hover:text-indigo-700" href="/">
                 Back To Account
               </a>
             </Link>

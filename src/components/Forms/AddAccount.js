@@ -36,7 +36,7 @@ const AddAccount = () => {
         navigate("/dashboard");
         window.location.reload();
       }
-    }, 3000);
+    }, 2000);
   }, [success]);
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
@@ -132,12 +132,6 @@ const AddAccount = () => {
                 Create Account
               </button>
             )}
-            {/* <p className="font-medium">
-              <span>Already have an account?</span>
-              <a className="text-indigo-600 hover:text-indigo-700" href="#">
-                Back To Account
-              </a>
-            </p> */}
           </form>
         </div>
       </div>
