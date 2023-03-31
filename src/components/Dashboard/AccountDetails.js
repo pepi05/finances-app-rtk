@@ -11,7 +11,7 @@ const AccountDetails = () => {
 
   useEffect(() => {
     dispatch(getSingleAccountAction(id));
-  }, [id]);
+  }, [id, dispatch]);
   //get data from store
   const { account, error, loading } = useSelector((state) => state?.accounts);
   //get all transactions
