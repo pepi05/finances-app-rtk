@@ -1,3 +1,9 @@
+
+# Link from deploy: https://finances-app-rtk.vercel.app/
+(sometimes register new user and login can be slow)
+
+
+
 # Project description
 
 The goal of this project is to create a web application that allows users to easily track their income and expenses. The application will be built using React and Redux Toolkit, which will provide a scalable and efficient solution for state management.
@@ -7,8 +13,6 @@ The application will have a user-friendly interface that allows users to add, ed
 The project will be divided into several components, including a user register/login, a transaction input form, a dashboard for visualizing income and expenses
 
 Overall, the goal of this project is to provide users with a simple and effective tool for managing their finances. By leveraging the power of React and Redux Toolkit, we aim to create a fast, reliable, and user-friendly application that helps users take control of their financial lives.
-
-
 
 
 
