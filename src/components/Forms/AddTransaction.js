@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { createTransactionAction } from "../../redux/slice/transactions/transactionSlice";
 
 const AddTransaction = () => {
   //get account ID
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading, isAdded } = useSelector((state) => state?.transactions);
 
   const [transaction, setTransaction] = useState({
     name: "",
@@ -27,6 +30,16 @@ const AddTransaction = () => {
     e.preventDefault();
     dispatch(createTransactionAction({ ...transaction, id }));
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isAdded) {
+        navigate(`/account/${id}`);
+        window.location.reload();
+      }
+    }, 2000);
+  }, [isAdded, navigate, id]);
+
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -35,7 +48,7 @@ const AddTransaction = () => {
             Add Transaction
           </h2>
           <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
-            You are adding new transaction to .....
+            You are adding new transaction to account: {id}
           </p>
           <form onSubmit={onSubmit}>
             <label className="block mb-5">
@@ -97,18 +110,26 @@ const AddTransaction = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-            >
-              Create Transaction
-            </button>
+            {loading ? (
+              <button
+                type="submit"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-gray-600"
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+              >
+                Create Transaction
+              </button>
+            )}
 
             <p className="font-medium">
               <Link
-                to={"/account/3"}
+                to={`/account/${id}`}
                 className="text-indigo-600 hover:text-indigo-700"
-                href="#"
               >
                 Back To Account
               </Link>

@@ -47,7 +47,7 @@ const EditAccount = () => {
         window.location.reload();
       }
     }, 2000);
-  }, [isUpdated]);
+  }, [isUpdated, navigate]);
 
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">

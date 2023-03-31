@@ -15,7 +15,7 @@ const initialState = {
 export const createTransactionAction = createAsyncThunk(
   "transaction/create",
   async (payload, { rejectWithValue, getState, dispatch }) => {
-    const { name, account, transactionType, amount, category, notes } = payload;
+    const { name, transactionType, amount, category, notes, id } = payload;
     try {
       //get the token
       const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -30,12 +30,11 @@ export const createTransactionAction = createAsyncThunk(
         `${baseURL}/transactions`,
         {
           name,
-          account,
+          account: id,
           transactionType,
           amount,
           category,
           notes,
-          account: payload.id,
         },
         config
       );
