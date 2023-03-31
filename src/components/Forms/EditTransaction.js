@@ -1,27 +1,59 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  getSingleTransactionAction,
+  updateTransactionAction,
+} from "../../redux/slice/transactions/transactionSlice";
 
 const EditTransaction = () => {
+  //get transaction id
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //get data from store
+  const {
+    transaction: transactionFetched,
+    isUpdated,
+    loading,
+    error,
+  } = useSelector((state) => state?.transactions);
+
+  const accountId = useSelector((state) => state?.accounts?.account?.data?._id);
+
   const [transaction, setTransaction] = useState({
-    title: "",
-    amount: "",
-    transactionType: "",
-    date: "",
-    category: "",
-    notes: "",
+    name: transactionFetched?.data?.name,
+    amount: transactionFetched?.data?.amount,
+    transactionType: transactionFetched?.data?.transactionType,
+    category: transactionFetched?.data?.category,
+    notes: transactionFetched?.data?.notes,
   });
-  //---Destructuring---
-  const { title, amount, transactionType, date, category, notes } = transaction;
-  //---onchange handler----
+
+  const { name, amount, transactionType, category, notes } = transaction;
+
   const onChange = (e) => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
   };
 
-  //---onsubmit handler----
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(transaction);
+    dispatch(updateTransactionAction({ ...transaction, id }));
   };
+
+  //get single transaction
+  useEffect(() => {
+    dispatch(getSingleTransactionAction(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isUpdated) {
+        navigate("/dashboard");
+        window.location.reload();
+      }
+    }, 2000);
+  }, [isUpdated, navigate]);
+
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -30,14 +62,19 @@ const EditTransaction = () => {
             Edit Transaction
           </h2>
           <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
-            You are editing transaction to .....
+            You are editing transaction to {transactionFetched?.data?.name}
           </p>
+          {error && (
+            <p className="mb-3 font-medium text-lg text-red-600 leading-normal">
+              {error}
+            </p>
+          )}
           <form onSubmit={onSubmit}>
             <label className="block mb-5">
               <input
-                value={title}
+                value={name}
                 onChange={onChange}
-                name="title"
+                name="name"
                 className="px-4 py-3.5 w-full text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                 id="signUpInput2-1"
                 type="text"
@@ -60,7 +97,7 @@ const EditTransaction = () => {
                 value={category}
                 onChange={onChange}
                 name="category"
-                class="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
+                className="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
               >
                 <option>-- Select Transaction Type --</option>
                 <option value="Income">Income</option>
@@ -72,7 +109,7 @@ const EditTransaction = () => {
                 value={transactionType}
                 onChange={onChange}
                 name="transactionType"
-                class="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
+                className="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
               >
                 <option>-- Select Category --</option>
                 <option value="Personal">Personal</option>
@@ -81,16 +118,6 @@ const EditTransaction = () => {
               </select>
             </label>
 
-            <label className="block mb-5">
-              <input
-                value={date}
-                onChange={onChange}
-                name="date"
-                className="px-4 py-3.5 w-full text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
-                id="signUpInput2-2"
-                type="date"
-              />
-            </label>
             <div>
               <div className="mt-3 mb-3">
                 <textarea
@@ -104,27 +131,29 @@ const EditTransaction = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-            >
-              Create Transaction
-            </button>
-            {/* <p className="font-medium">
-              <span>Already have an account?</span>
-              <a className="text-indigo-600 hover:text-indigo-700" href="#">
-                Back To Account
-              </a>
-            </p> */}
+            {loading ? (
+              <button
+                disabled
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-gray-300 bg-gray-600"
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+              >
+                Update Transaction
+              </button>
+            )}
 
             <p className="font-medium">
-              <Link
-                to={"/account/3"}
+              <a
+                href={`/account/${accountId}`}
                 className="text-indigo-600 hover:text-indigo-700"
-                href="#"
               >
                 Back To Account
-              </Link>
+              </a>
             </p>
           </form>
         </div>

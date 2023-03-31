@@ -1,5 +1,5 @@
 import { Disclosure } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
@@ -84,32 +84,18 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex items-center">
-                {/* <div className="flex-shrink-0">
-                  <button
-                    type="button"
-                    className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                <div className="flex-shrink-0">
+                  <Link
+                    to="add-account"
+                    className="relative inline-flex items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 mr-3"
+                  >
                     <PlusIcon
                       className="-ml-1 mr-2 h-5 w-5"
                       aria-hidden="true"
                     />
-                    <span>New Bill</span>
-                  </button>
-                </div> */}
-
-                {isLoggedIn && (
-                  <div className="flex-shrink-0">
-                    <button
-                      type="button"
-                      className="relative inline-flex items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 mr-3"
-                    >
-                      <PlusIcon
-                        className="-ml-1 mr-2 h-5 w-5"
-                        aria-hidden="true"
-                      />
-                      <span>New Project</span>
-                    </button>
-                  </div>
-                )}
+                    <span>New Project</span>
+                  </Link>
+                </div>
 
                 {isLoggedIn && (
                   <div className="flex-shrink-0">

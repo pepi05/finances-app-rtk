@@ -35,7 +35,10 @@ const TransactionList = ({ transactions }) => {
                 </tr>
 
                 {transactions?.map((transaction) => (
-                  <tr className="h-18 border-b border-coolGray-100">
+                  <tr
+                    className="h-18 border-b border-coolGray-100"
+                    key={transaction?.name}
+                  >
                     <th className="whitespace-nowrap px-4 bg-white text-left">
                       <div className="flex items-center -m-2">
                         <div className="w-auto p-2">
@@ -77,7 +80,7 @@ const TransactionList = ({ transactions }) => {
                       {new Date(transaction?.createdAt).toLocaleDateString()}
                     </th>
                     <Link
-                      to={"/edit-transaction/8"}
+                      to={`/edit-transaction/${transaction?._id}`}
                       className="whitespace-nowrap cursor-pointer px-4 bg-white text-sm font-medium text-blue-500 text-center"
                     >
                       EDIT

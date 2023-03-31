@@ -93,7 +93,7 @@ const EditAccount = () => {
                 value={accountType}
                 onChange={onChange}
                 name="accountType"
-                class="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
+                className="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
               >
                 <option>-- Select Account Type --</option>
                 <option value="Savings">Savings</option>
@@ -143,10 +143,11 @@ const EditAccount = () => {
                 Update Account
               </button>
             )}
-            <Link to={"/account/8"} className="font-medium">
-              <a className="text-indigo-600 hover:text-indigo-700" href="/">
-                Back To Account
-              </a>
+            <Link
+              to={`/account/${id}`}
+              className=" text-indigo-600 hover:text-indigo-700"
+            >
+              Back To Account
             </Link>
           </form>
         </div>
