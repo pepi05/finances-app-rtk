@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { createTransactionAction } from "../../redux/slice/transactions/transactionSlice";
 
@@ -17,9 +17,7 @@ const AddTransaction = () => {
     notes: "",
   });
 
-  const { name, amount, transactionType, date, category, notes } = transaction;
-
-  console.log(category);
+  const { name, amount, transactionType, category, notes } = transaction;
 
   const onChange = (e) => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
@@ -67,7 +65,7 @@ const AddTransaction = () => {
                 value={transactionType}
                 onChange={onChange}
                 name="transactionType"
-                class="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
+                className="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
               >
                 <option>-- Select Transaction Type --</option>
                 <option value="Income">Income</option>
@@ -79,7 +77,7 @@ const AddTransaction = () => {
                 value={category}
                 onChange={onChange}
                 name="category"
-                class="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
+                className="appearance-none block w-full py-3 px-4 leading-tight text-gray-700 bg-gray-200 focus:bg-white border border-gray-200 focus:border-gray-500 rounded focus:outline-none"
               >
                 <option>-- Select Category --</option>
                 <option value="Personal">Personal</option>

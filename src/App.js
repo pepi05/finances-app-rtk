@@ -10,6 +10,7 @@ import AddAccount from "./components/Forms/AddAccount";
 import EditAccount from "./components/Forms/EditAccount";
 import Login from "./components/Forms/Login";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
+import About from "./components/AboutPage/About";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
@@ -26,10 +28,32 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route path="/account" element={<AccountDetails />} />
-        <Route path="/account/:id" element={<AccountDetails />} />
-        <Route path="/add-transaction/:id" element={<AddTransaction />} />
-        <Route path="/edit-transaction/:id" element={<EditTransaction />} />
+
+        <Route
+          path="/account/:id"
+          element={
+            <AuthRoute>
+              <AccountDetails />
+            </AuthRoute>
+          }
+        />
+
+        <Route
+          path="/add-transaction/:id"
+          element={
+            <AuthRoute>
+              <AddTransaction />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/edit-transaction/:id"
+          element={
+            <AuthRoute>
+              <EditTransaction />
+            </AuthRoute>
+          }
+        />
         <Route
           path="/add-account"
           element={
@@ -38,7 +62,14 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route path="/edit-account/:id" element={<EditAccount />} />
+        <Route
+          path="/edit-account/:id"
+          element={
+            <AuthRoute>
+              <EditAccount />
+            </AuthRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
